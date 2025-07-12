@@ -1,0 +1,89 @@
+{% extends 'land_management/general/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Approval Process{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-8">
+    <div class="w-full max-w-3xl bg-white border border-gray-200 rounded-2xl shadow-2xl p-8">
+        <h2 class="text-2xl font-bold text-center mb-6 text-blue-800">Approval Process for {{ registration.transaction_reference }}</h2>
+                    <!-- Land Registration Details -->
+        <div class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h3 class="text-lg font-semibold text-blue-700 mb-2 flex items-center"><i class="fas fa-info-circle mr-2"></i>Land Registration Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                <div>
+                                    <p><strong>Transaction Ref:</strong> {{ registration.transaction_reference }}</p>
+                                    <p><strong>Date of Sale:</strong> {{ registration.date_of_sale|date:"M d, Y" }}</p>
+                                    <p><strong>Sale Price:</strong> {{ registration.sale_price }} SLS</p>
+                                    <p><strong>Land Code:</strong> {{ registration.land_code }}</p>
+                                    <p><strong>Status:</strong> {{ registration.status|title }}</p>
+                                    <p><strong>Current Step:</strong> {{ registration.current_step|title|cut:"_" }}</p>
+                                </div>
+                <div>
+                                    <p><strong>Buyer:</strong> {{ registration.buyer_full_name }} (ID: {{ registration.buyer_national_id }})</p>
+                                    <p><strong>Seller:</strong> {{ registration.seller_full_name }} (ID: {{ registration.seller_national_id }})</p>
+                                    <p><strong>Land Size:</strong> {{ registration.land_size }} {{ registration.size_unit }}</p>
+                                    <p><strong>Land Zone:</strong> {{ registration.land_zone }}</p>
+                                    <p><strong>Land Use:</strong> {{ registration.land_use_type }}</p>
+                                    <p><strong>Notary:</strong> {{ registration.notary_name }}</p>
+                                    <p><strong>Documents:</strong> 
+                                        {% if registration.documents %}
+                                            <a href="{{ registration.documents.url }}" target="_blank">View Documents</a>
+                                        {% else %}
+                                            <span class="text-muted">No documents uploaded</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- Previous Approvals -->
+                    {% if approval.director_status != 'pending' %}
+        <div class="mb-4 bg-gray-100 border-l-4 border-blue-400 p-4 rounded">
+            <h4 class="font-semibold text-blue-700 mb-1">Director Approval</h4>
+            <p><strong>Status:</strong> {{ approval.director_status|title }}</p>
+            <p><strong>Comment:</strong> {{ approval.director_comment|default:"No comment" }}</p>
+            <p><strong>Date:</strong> {{ approval.director_approval_date|date:"M d, Y" }}</p>
+                    </div>
+                    {% endif %}
+                    {% if approval.secretary_status != 'pending' %}
+        <div class="mb-4 bg-gray-100 border-l-4 border-green-400 p-4 rounded">
+            <h4 class="font-semibold text-green-700 mb-1">Secretary Approval</h4>
+            <p><strong>Status:</strong> {{ approval.secretary_status|title }}</p>
+            <p><strong>Comment:</strong> {{ approval.secretary_comment|default:"No comment" }}</p>
+            <p><strong>Date:</strong> {{ approval.secretary_approval_date|date:"M d, Y" }}</p>
+                    </div>
+                    {% endif %}
+                    {% if approval.deputy_mayor_status != 'pending' %}
+        <div class="mb-4 bg-gray-100 border-l-4 border-yellow-400 p-4 rounded">
+            <h4 class="font-semibold text-yellow-700 mb-1">Deputy Mayor Approval</h4>
+            <p><strong>Status:</strong> {{ approval.deputy_mayor_status|title }}</p>
+            <p><strong>Comment:</strong> {{ approval.deputy_mayor_comment|default:"No comment" }}</p>
+            <p><strong>Date:</strong> {{ approval.deputy_mayor_approval_date|date:"M d, Y" }}</p>
+                    </div>
+                    {% endif %}
+        {% if approval.mayor_status != 'pending' %}
+        <div class="mb-4 bg-gray-100 border-l-4 border-purple-400 p-4 rounded">
+            <h4 class="font-semibold text-purple-700 mb-1">Mayor Approval</h4>
+            <p><strong>Status:</strong> {{ approval.mayor_status|title }}</p>
+            <p><strong>Comment:</strong> {{ approval.mayor_comment|default:"No comment" }}</p>
+            <p><strong>Date:</strong> {{ approval.mayor_approval_date|date:"M d, Y" }}</p>
+                            </div>
+                            {% endif %}
+        {% if form %}
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center"><i class="fas fa-user-check mr-2"></i>Approval Details</h3>
+                {{ form|crispy }}
+                                    </div>
+            <div class="flex justify-end gap-2 mt-4">
+                <a href="{% url 'land_management:dashboard' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-4 py-2 rounded transition">Cancel</a>
+                <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold px-6 py-2 rounded-lg shadow hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+                                    <i class="fas fa-save"></i> Submit Approval
+                                </button>
+                            </div>
+                        </form>
+                    {% endif %}
+    </div>
+</div>
+{% endblock %} 

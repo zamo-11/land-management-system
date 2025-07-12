@@ -1,0 +1,73 @@
+{% extends 'land_management/general/base.html' %}
+{% block title %}Land Registrations{% endblock %}
+{% block content %}
+<div class="container mx-auto py-6 px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-primary">Land Registrations</h2>
+        <a href="{% url 'land_management:land_registration' %}" class="bg-success hover:bg-success-dark text-white px-4 py-2 rounded transition-all duration-200 flex items-center shadow hover:shadow-lg">
+            <i class="fas fa-plus mr-2"></i> New Registration
+        </a>
+    </div>
+    <div class="bg-white rounded shadow-sm border border-light">
+        <div class="p-0">
+            <div class="overflow-x-auto">
+                <table class="w-full table-auto">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-muted uppercase tracking-wider">Reference</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-muted uppercase tracking-wider">Buyer</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-muted uppercase tracking-wider">Land Code</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-muted uppercase tracking-wider">Date of Sale</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-muted uppercase tracking-wider">Status</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-muted uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-light">
+                        {% for registration in registrations %}
+                        <tr class="hover:bg-light transition-colors duration-200">
+                            <td class="px-4 py-3">
+                                <a href="{% url 'land_management:registration_detail' registration.id %}" class="text-primary hover:text-primary-dark font-medium">
+                                    {{ registration.transaction_reference }}
+                                </a>
+                            </td>
+                            <td class="px-4 py-3">{{ registration.buyer_full_name }}</td>
+                            <td class="px-4 py-3">{{ registration.land_code }}</td>
+                            <td class="px-4 py-3">{{ registration.date_of_sale }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                    {% if registration.status == 'pending' %}bg-warning text-dark
+                                    {% elif registration.status == 'approved' %}bg-info text-white
+                                    {% elif registration.status == 'completed' %}bg-success text-white
+                                    {% elif registration.status == 'rejected' %}bg-danger text-white
+                                    {% else %}bg-secondary text-white{% endif %}">
+                                    {{ registration.status|title }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex space-x-1">
+                                    <a href="{% url 'land_management:registration_detail' registration.id %}" class="bg-info hover:bg-info-dark text-white px-2 py-1 rounded text-sm transition-colors duration-200" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if request.user.is_staff or registration.user == request.user %}
+                                        <a href="{% url 'land_management:edit_land_registration' registration.id %}" class="bg-primary hover:bg-primary-dark text-white px-2 py-1 rounded text-sm transition-colors duration-200" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'land_management:delete_land_registration' registration.id %}" class="bg-danger hover:bg-danger-dark text-white px-2 py-1 rounded text-sm transition-colors duration-200" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="px-4 py-8 text-center text-muted">No registrations found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,97 @@
+{% extends 'land_management/general/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}New Land Registration{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-8">
+    <div class="w-full max-w-3xl bg-white border border-gray-200 rounded-2xl shadow-2xl p-8">
+        <h2 class="text-3xl font-extrabold text-center text-blue-800 mb-8 tracking-wide">Land Registration Form</h2>
+        <form method="post" enctype="multipart/form-data" class="space-y-8">
+                {% csrf_token %}
+            <!-- Seller Information -->
+            <div class="mb-6">
+                <div class="bg-blue-100 rounded-t-lg px-4 py-2 mb-2">
+                    <h3 class="text-lg font-semibold text-blue-700">Seller Information</h3>
+                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-b-lg p-4">
+                    {{ form.seller_full_name|as_crispy_field }}
+                    {{ form.seller_national_id|as_crispy_field }}
+                    {{ form.seller_birth_date|as_crispy_field }}
+                    {{ form.seller_phone|as_crispy_field }}
+                    <div class="md:col-span-2">{{ form.seller_address|as_crispy_field }}</div>
+                                </div>
+                            </div>
+            <!-- Buyer Information -->
+            <div class="mb-6">
+                <div class="bg-green-100 rounded-t-lg px-4 py-2 mb-2">
+                    <h3 class="text-lg font-semibold text-green-700">Buyer Information</h3>
+                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-b-lg p-4">
+                    {{ form.buyer_full_name|as_crispy_field }}
+                    {{ form.buyer_national_id|as_crispy_field }}
+                    {{ form.buyer_phone|as_crispy_field }}
+                    <div class="md:col-span-2">{{ form.buyer_address|as_crispy_field }}</div>
+                                </div>
+                            </div>
+            <!-- Land Information -->
+            <div class="mb-6">
+                <div class="bg-purple-100 rounded-t-lg px-4 py-2 mb-2">
+                    <h3 class="text-lg font-semibold text-purple-700">Land Information</h3>
+                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-b-lg p-4">
+                    {{ form.land_code|as_crispy_field }}
+                    {{ form.land_size|as_crispy_field }}
+                    {{ form.size_unit|as_crispy_field }}
+                    {{ form.land_use_type|as_crispy_field }}
+                    {{ form.land_zone|as_crispy_field }}
+                    {{ form.land_district|as_crispy_field }}
+                    {{ form.land_region|as_crispy_field }}
+                    {{ form.land_direction_east|as_crispy_field }}
+                    {{ form.land_direction_south|as_crispy_field }}
+                    {{ form.land_direction_west|as_crispy_field }}
+                                </div>
+                            </div>
+            <!-- Transaction Details -->
+            <div class="mb-6">
+                <div class="bg-yellow-100 rounded-t-lg px-4 py-2 mb-2">
+                    <h3 class="text-lg font-semibold text-yellow-700">Transaction Details</h3>
+                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-b-lg p-4">
+                    {{ form.date_of_sale|as_crispy_field }}
+                    {{ form.sale_price|as_crispy_field }}
+                    {{ form.title_deed_number|as_crispy_field }}
+                    {{ form.title_deed_date|as_crispy_field }}
+                    {{ form.sale_deed_number|as_crispy_field }}
+                    {{ form.sale_deed_date|as_crispy_field }}
+                                </div>
+                            </div>
+            <!-- Transaction Participants -->
+            <div class="mb-6">
+                <div class="bg-pink-100 rounded-t-lg px-4 py-2 mb-2">
+                    <h3 class="text-lg font-semibold text-pink-700">Transaction Participants</h3>
+                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 rounded-b-lg p-4">
+                    {{ form.notary_name|as_crispy_field }}
+                    {{ form.guarantor_name|as_crispy_field }}
+                    {{ form.witness1_name|as_crispy_field }}
+                    {{ form.witness2_name|as_crispy_field }}
+                                </div>
+                            </div>
+            <!-- Document Upload -->
+            <div class="mb-6">
+                <div class="bg-gray-200 rounded-t-lg px-4 py-2 mb-2">
+                    <h3 class="text-lg font-semibold text-gray-700">Supporting Documents</h3>
+                        </div>
+                <div class="bg-gray-50 rounded-b-lg p-4">
+                    {{ form.documents|as_crispy_field }}
+                </div>
+            </div>
+            <button type="submit" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+                <i class="fa fa-paper-plane"></i>
+                Register
+            </button>
+            </form>
+    </div>
+</div>
+{% endblock %} 
